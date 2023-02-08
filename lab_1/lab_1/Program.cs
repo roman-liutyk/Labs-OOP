@@ -11,11 +11,12 @@ namespace lab_1
         static void Main(string[] args)
         {
             TCylinder cylinder = new TCylinder();
+            TCircle circle = new TCircle();
 
             ChooseMenu();
 
             int operation = Convert.ToInt32(Console.ReadLine());
-            while (operation >= 0 && operation <= 6)
+            while (operation >= 0 && operation <= 8)
             {
                 switch (operation)
                 {
@@ -25,30 +26,42 @@ namespace lab_1
                         break;
                     case 1:
                         Console.WriteLine("Enter the radius: ");
-                        double radius = Convert.ToInt32(Console.ReadLine());
+                        double radius = Convert.ToDouble(Console.ReadLine());
+                        circle.SetR(radius);
                         cylinder.SetR(radius);
                         Divider();
                         break;
                     case 2:
-                        Console.WriteLine("Radius: " + cylinder.GetR());
+                        Console.WriteLine("Radius: " + circle.GetR());
                         Divider();
                         break;
                     case 3:
-                        Console.WriteLine("Circle square: " + cylinder.CalculateCircleSquare());
+                        Console.WriteLine("Circle square: " + circle.CalculateSquare());
                         Divider();
                         break;
                     case 4:
-                        Console.WriteLine("Circle length: " + cylinder.CalculateCircleLength());
+                        Console.WriteLine("Circle length: " + circle.CalculateCircleLength());
                         Divider();
                         break;
                     case 5:
                         Console.WriteLine("Enter the height: ");
-                        double height = Convert.ToInt32(Console.ReadLine());
+                        double height = Convert.ToDouble(Console.ReadLine());
                         cylinder.SetHeight(height);
                         Divider();
                         break;
                     case 6:
                         Console.WriteLine("Volume: " + cylinder.CalculateVolume());
+                        Divider();
+                        break;
+                    case 7:
+                        Console.WriteLine("Cylinder square: " + cylinder.CalculateSquare());
+                        Divider();
+                        break;
+                    case 8:
+                        Console.WriteLine("Enter radius of new circle:");
+                        double r = Convert.ToDouble(Console.ReadLine());
+                        TCircle temp = new TCircle(R: r);
+                        circle.Compare(temp);
                         Divider();
                         break;
                 }
@@ -68,6 +81,8 @@ namespace lab_1
             Console.WriteLine("4 - get circle length");
             Console.WriteLine("5 - set cylinder height");
             Console.WriteLine("6 - get cylinder volume");
+            Console.WriteLine("7 - get cylinder square");
+            Console.WriteLine("8 - compare circles");
             Console.WriteLine("0 - exit");
             Divider();
         }
@@ -106,7 +121,7 @@ namespace lab_1
                 return this.radius;
             }
 
-            public double CalculateCircleSquare() => Math.Pow(Math.PI * this.radius, 2);
+            public virtual double CalculateSquare() => Math.PI * Math.Pow(this.radius, 2);
 
             public double CalculateCircleLength() => 2 * Math.PI * this.radius;
 
@@ -161,7 +176,12 @@ namespace lab_1
 
             public double CalculateVolume()
             {
-                return CalculateCircleSquare() * height;
+                return Math.Pow(GetR(), 2) * Math.PI * height;
+            }
+
+            public override double CalculateSquare()
+            {
+                return 2 * Math.PI * Math.Pow(GetR(), 2) + 2 * Math.PI * GetR() * height;
             }
         }
     }
