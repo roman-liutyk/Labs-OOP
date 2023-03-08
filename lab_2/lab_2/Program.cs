@@ -24,11 +24,14 @@ namespace lab_2
 
             Console.WriteLine("=============================================");
 
-            Console.WriteLine("Enter x and y of vector a");
-            double[] a = firstPart.inputVector();
+            Console.WriteLine("Enter number of coordinates in vectors");
+            int numberOfCord = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter x and y of vector b");
-            double[] b = firstPart.inputVector();
+            Console.WriteLine("Enter vector a");
+            double[] a = firstPart.inputVector(numberOfCord);
+
+            Console.WriteLine("Enter vector b");
+            double[] b = firstPart.inputVector(numberOfCord);
 
             Console.WriteLine(firstPart.perpendicularityCheck(a, b));
 
@@ -54,9 +57,13 @@ namespace lab_2
 
             int[,] secondArray = secondPart.generateArray(x, y);
 
+            Console.WriteLine("Start matrix:");
+
             print2DArray(secondArray);
 
             Console.WriteLine("=============================================");
+
+            Console.WriteLine("Sorted matrix:");
 
             int[,] sortedDesc = secondPart.sortDesc(secondArray);
 
@@ -66,11 +73,13 @@ namespace lab_2
 
             secondPart.matchingRowCol();
 
+            Console.WriteLine("=============================================");
+
             List<int[]> sums = secondPart.sumInNegRow(secondArray);
 
             foreach(int[] sum in sums)
             {
-                Console.WriteLine("In " + sum[0] + 1 + " row sum = " + sum[1]);
+                Console.WriteLine("In " + (sum[0] + 1) + " row sum = " + sum[1]);
             }
         }
 
@@ -78,7 +87,7 @@ namespace lab_2
         {
             foreach (T element in array)
             {
-                Console.Write(element + " ");
+                Console.Write("[" + element + "] ");
             }
             Console.Write("\n");
         }
@@ -148,15 +157,14 @@ public class LabFirstPart
         return count;
     }
 
-    public double[] inputVector()
-    {
-        Console.WriteLine("Enter the x of vector:");
-        double x = double.Parse(Console.ReadLine());
+    public double[] inputVector(int numberOfCord)
+    { 
+        double[] vector = new double[numberOfCord];
 
-        Console.WriteLine("Enter the y of vector:");
-        double y = double.Parse(Console.ReadLine());
-
-        double[] vector = { x, y };
+        for(int i = 0; i < numberOfCord; i++)
+        {
+            vector[i] = double.Parse(Console.ReadLine());
+        }
 
         return vector;
     }
@@ -229,9 +237,9 @@ public class LabSecondPart
         return array;
     }
 
-    public int[,] sortDesc(int[,] array)
+    public int[,] sortDesc(int[,] matrix)
     {
-        int[,] result = array;
+        int[,] result = matrix;
         int cols = result.GetLength(1);
         int rows = result.GetLength(0);
 
@@ -294,21 +302,21 @@ public class LabSecondPart
 
         foreach (int row in matchingRows)
         {
-            Console.WriteLine(row);
+            Console.WriteLine(row + 1);
         }
     }
 
-    public List<int[]> sumInNegRow(int[,] array)
+    public List<int[]> sumInNegRow(int[,] matrix)
     {
         List<int[]> sums = new List<int[]>();
 
-        for (int i = 0; i < array.GetLength(0); i++)
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
             bool hasNegative = false;
 
-            for (int j = 0; j < array.GetLength(1); j++)
+            for (int j = 0; j < matrix.GetLength(1); j++)
             {
-                if (array[i, j] < 0)
+                if (matrix[i, j] < 0)
                 {
                     hasNegative = true;
                     break;
@@ -319,9 +327,9 @@ public class LabSecondPart
             {
                 int sum = 0;
 
-                for (int j = 0; j < array.GetLength(1); j++)
+                for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    sum += array[i, j];
+                    sum += matrix[i, j];
                 }
 
                 int[] result = { i, sum };
